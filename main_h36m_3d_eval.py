@@ -26,7 +26,7 @@ def main(opt):
     net_pred.cuda()
     model_path_len = '{}/ckpt_best.pth.tar'.format(opt.ckpt)
     print(">>> loading ckpt len from '{}'".format(model_path_len))
-    ckpt = torch.load(model_path_len)
+    ckpt = torch.load(model_path_len, map_location="cpu", weights_only=False)
     start_epoch = ckpt['epoch'] + 1
     err_best = ckpt['err']
     lr_now = ckpt['lr']
@@ -52,13 +52,15 @@ def main(opt):
 
         ret_test = run_model(net_pred, is_train=3, data_loader=test_loader, opt=opt)
         print('testing error: {:.3f}'.format(ret_test['#1']))
+        print(f"Short term error : 80mm : {ret_test['#2']:.3f}, 160mm : {ret_test['#4']:.3f}, 320mm : {ret_test['#8']:.3f}, 400mm : {ret_test['#10']:.3f}")
+        print(f"Short term error : 560mm : {ret_test['#14']:.3f}, 720mm : {ret_test['#18']:.3f}, 880mm : {ret_test['#22']:.3f}, 1000mm : {ret_test['#25']:.3f}")
         ret_log = np.array([])
         for k in ret_test.keys():
             ret_log = np.append(ret_log, [ret_test[k]])
         errs[i] = ret_log
     errs[-1] = np.mean(errs[:-1], axis=0)
     acts = np.expand_dims(np.array(acts + ["average"]), axis=1)
-    value = np.concatenate([acts, errs.astype(np.str)], axis=1)
+    value = np.concatenate([acts, errs.astype(str)], axis=1)
     log.save_csv_log(opt, head, value, is_create=True, file_name='test_pre_action')
 
 

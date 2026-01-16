@@ -33,7 +33,7 @@ def main(opt):
 
     model_path_len = '{}/ckpt_best.pth.tar'.format(opt.ckpt)
     print(">>> loading ckpt len from '{}'".format(model_path_len))
-    ckpt = torch.load(model_path_len)
+    ckpt = torch.load(model_path_len, weights_only=True)
     net_pred.load_state_dict(ckpt['state_dict'])
     print(">>> ckpt len loaded (epoch: {} | err: {})".format(ckpt['epoch'], ckpt['err']))
     net_pred = net_pred.module

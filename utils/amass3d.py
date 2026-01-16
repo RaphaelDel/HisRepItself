@@ -70,14 +70,18 @@ class Datasets(Dataset):
         n = 0
         for ds in amass_splits[split]:
             if not os.path.isdir(self.path_to_data + ds):
-                print(ds)
+                print(self.path_to_data + ds)
                 continue
             print('>>> loading {}'.format(ds))
             for sub in os.listdir(self.path_to_data + ds):
+                # print(sub)
                 if not os.path.isdir(self.path_to_data + ds + '/' + sub):
+                    print("Skip " + self.path_to_data + ds + '/' + sub)
                     continue
                 for act in os.listdir(self.path_to_data + ds + '/' + sub):
+                    # print(act)
                     if not act.endswith('.npz'):
+                        print("Skip " + act)
                         continue
                     # if not ('walk' in act or 'jog' in act or 'run' in act or 'treadmill' in act):
                     #     continue
