@@ -19,7 +19,7 @@ class Datasets(Dataset):
         :param split: 0 train, 1 testing, 2 validation
         :param sample_rate:
         """
-        self.path_to_data = "./datasets/h3.6m/"
+        self.path_to_data = opt.path_to_data #"./datasets/h3.6m/"
         self.split = split
         self.in_n = opt.input_n
         self.out_n = opt.output_n
@@ -35,7 +35,7 @@ class Datasets(Dataset):
                     "sittingdown", "takingphoto", "waiting", "walkingdog",
                     "walkingtogether"]
         else:
-            acts = actions
+            acts = list(actions)
         # subs = np.array([[1], [11], [5]])
         # acts = ['walking']
         # 32 human3.6 joint name:
@@ -50,8 +50,7 @@ class Datasets(Dataset):
         subs = subs[split]
         key = 0
         for subj in subs:
-            for action_idx in np.arange(len(acts)):
-                action = acts[action_idx]
+            for action in acts:
                 if self.split <= 1:
                     for subact in [1, 2]:  # subactions
                         print("Reading subject {0}, action {1}, subaction {2}".format(subj, action, subact))
