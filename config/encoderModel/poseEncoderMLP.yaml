@@ -1,0 +1,8 @@
+_target_: model.pose_mlp.PoseMLP
+
+latent_dim : ${latent_dim}
+pose_dim : ${in_features} # 22 joints * 3D coordinates
+max_mask_ratio : 0.5
+
+dropout : ${dropout}
+device: ${device}

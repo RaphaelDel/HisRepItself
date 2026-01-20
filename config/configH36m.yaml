@@ -1,0 +1,47 @@
+defaults:
+  - data: h36mLie
+  - encoderModel: poseEncoderMLP
+  - motionModel: motion_diffusion
+  - train: default
+
+# Global
+seed: 42
+device: cuda:1
+exp_name : LieEncoderMLP #Diffusion_latent
+
+eval :
+    num_visualizations: 4
+    rf_checkpoint: /home/raphael/motionPred/HisRepItself/outputs/Diffusion_latent/h36m/2026-01-17-17-43-50/checkpoint/best_val_checkpoint.pth.tar
+mode : output # output -> train / eval -> test
+
+
+#DataLoader
+batch_size: 32
+test_batch_size: 32
+num_workers: 0
+pin_memory: true
+
+# Model
+in_features: 99 #99 for expMap, 96 for 3D # 32 joints * 3 dimensions
+latent_dim: 128
+dropout: 0.1
+dry_run : False
+
+#Diffusion
+diffusion_steps : 20
+local_loss_weight: 0.5 # Weight for local loss (joints)
+
+#Encoder
+use_pose_autoencoder: true
+encoderCheckpoint: /home/raphael/motionPred/HisRepItself/outputs/EncoderMLP/2026-01-16-17-21-26/checkpoint/best_val_checkpoint.pth.tar
+
+OUTPUT:
+    output_dir : experiments
+    log_dir: log_dir
+    ckpt_dir: checkpoint
+    tensorboard_dir : tensorboard
+
+# Change output directory
+hydra:
+  run:
+    dir: ${mode}/${exp_name}/${hydra:runtime.choices.data}/${now:%Y-%m-%d-%H-%M-%S}
