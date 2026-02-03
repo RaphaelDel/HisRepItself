@@ -1,0 +1,44 @@
+defaults:
+  - data: h36mLie
+  - encoderModel: poseTransformerVAE
+  - train: default
+
+seed: 42
+device: cuda:1
+exp_name: PoseTransformerVAE
+mode: outputs
+
+batch_size: 32
+test_batch_size: 32
+num_workers: 0
+pin_memory: true
+dry_run: true
+
+# Model hyperparameters
+num_joints: 32
+d_model: 256
+latent_dim: 256
+n_heads: 8
+n_layers: 4
+dropout: 0.1
+
+# Loss weights
+loss:
+  fk: 1.0
+  angle: 20.0 #1.0
+  beta: 2.0 #0.001
+
+# Skeleton
+skeleton:
+  type: h36m
+  path: body_models/smpl_skeleton.npz
+
+OUTPUT:
+  output_dir: experiments
+  log_dir: log_dir
+  ckpt_dir: checkpoint
+  tensorboard_dir: tensorboard
+
+hydra:
+  run:
+    dir: ${mode}/${exp_name}/${hydra:runtime.choices.data}/${now:%Y-%m-%d-%H-%M-%S}
