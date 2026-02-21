@@ -231,14 +231,27 @@ def fkl_torch(angles, parent, offset, rotInd, expmapInd):
     """
     n = angles.data.shape[0]
     j_n = offset.shape[0]
-    p3d = Variable(torch.from_numpy(offset)).float().cuda().unsqueeze(0).repeat(n, 1, 1)
+    device = angles.device
+    p3d_offset = torch.from_numpy(offset).float().to(device).unsqueeze(0).repeat(n, 1, 1)
     angles = angles[:, 3:].contiguous().view(-1, 3)
     R = data_utils.expmap2rotmat_torch(angles).view(n, j_n, 3, 3)
-    for i in np.arange(1, j_n):
-        if parent[i] > 0:
-            R[:, i, :, :] = torch.matmul(R[:, i, :, :], R[:, parent[i], :, :]).clone()
-            p3d[:, i, :] = torch.matmul(p3d[0, i, :], R[:, parent[i], :, :]) + p3d[:, parent[i], :]
-    return p3d
+
+    global_rot = []
+    global_pos = []
+    for i in np.arange(j_n):
+        if i == 0:
+            rot_i = R[:, i]
+            pos_i = p3d_offset[:, i]
+        elif parent[i] > 0:
+            rot_i = torch.matmul(R[:, i], global_rot[parent[i]])
+            pos_i = torch.matmul(p3d_offset[:, i].unsqueeze(1), global_rot[parent[i]]).squeeze(1) + global_pos[parent[i]]
+        else:
+            rot_i = R[:, i]
+            pos_i = p3d_offset[:, i]
+        global_rot.append(rot_i)
+        global_pos.append(pos_i)
+
+    return torch.stack(global_pos, dim=1)
 
 
 def main():

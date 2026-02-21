@@ -1,0 +1,22 @@
+_target_: model.auxformer_nepa_joint.AuxFormerNEPAJoint
+
+num_joints: ${num_joints}
+input_dim: 3
+
+h_dim: ${auxformer_nepa.h_dim}
+num_heads: ${auxformer_nepa.num_heads}
+encoder_depth: ${auxformer_nepa.encoder_depth}
+mlp_dim: ${auxformer_nepa.mlp_dim}
+dim_per_head: ${auxformer_nepa.dim_per_head}
+dropout: ${auxformer_nepa.dropout}
+max_timestep: ${auxformer_nepa.max_timestep}
+
+add_joint_token: ${auxformer_nepa.add_joint_token}
+
+mask_ratio: ${auxformer_nepa.mask_ratio}
+regular_masking: ${auxformer_nepa.regular_masking}
+
+denoise: ${auxformer_nepa.denoise}
+noise_dev: ${auxformer_nepa.noise_dev}
+part_noise: ${auxformer_nepa.part_noise}
+part_noise_ratio: ${auxformer_nepa.part_noise_ratio}

@@ -1,0 +1,59 @@
+_target_: model.auxformer_xyz.AuxFormerXYZ
+
+num_joints: ${num_joints}
+past_timestep: ${data.opt.input_n}
+future_timestep: ${data.opt.output_n}
+
+h_dim: ${auxformer.h_dim}
+decoder_dim: ${auxformer.decoder_dim}
+num_heads: ${auxformer.num_heads}
+encoder_depth: ${auxformer.encoder_depth}
+mlp_dim: ${auxformer.mlp_dim}
+dim_per_head: ${auxformer.dim_per_head}
+dropout: ${auxformer.dropout}
+
+mask_ratio: ${auxformer.mask_ratio}
+range_mask_ratio: ${auxformer.range_mask_ratio}
+regular_masking: ${auxformer.regular_masking}
+
+same_head: ${auxformer.same_head}
+multi_output: ${auxformer.multi_output}
+multi_same_head: ${auxformer.multi_same_head}
+decoder_masking: ${auxformer.decoder_masking}
+
+pred_all: ${auxformer.pred_all}
+only_recons_past: ${auxformer.only_recons_past}
+add_joint_token: ${auxformer.add_joint_token}
+add_residual: ${auxformer.add_residual}
+
+concat_vel: ${auxformer.concat_vel}
+concat_acc: ${auxformer.concat_acc}
+
+noise_dev: ${auxformer.noise_dev}
+part_noise: ${auxformer.part_noise}
+part_noise_ratio: ${auxformer.part_noise_ratio}
+denoise: ${auxformer.denoise}
+denoise_mode: ${auxformer.denoise_mode}
+range_noise_dev: ${auxformer.range_noise_dev}
+
+use_jepa_conditioning: ${auxformer.conditioning.enabled}
+conditioning_mode: ${auxformer.conditioning.mode}
+conditioning_on_decoder: ${auxformer.conditioning.on_decoder}
+conditioning_zero_init: ${auxformer.conditioning.zero_init}
+
+jepa_ckpt: ${auxformer.conditioning.jepa_ckpt}
+jepa_ckpt_strict: ${auxformer.conditioning.jepa_ckpt_strict}
+jepa_freeze: ${auxformer.conditioning.jepa_freeze}
+jepa_sample_latent: ${auxformer.conditioning.jepa_sample_latent}
+jepa_d_model: ${auxformer.conditioning.jepa_d_model}
+jepa_latent_dim: ${auxformer.conditioning.jepa_latent_dim}
+jepa_n_heads: ${auxformer.conditioning.jepa_n_heads}
+jepa_n_layers: ${auxformer.conditioning.jepa_n_layers}
+jepa_dropout: ${auxformer.conditioning.jepa_dropout}
+jepa_pred_layers: ${auxformer.conditioning.jepa_pred_layers}
+jepa_pred_heads: ${auxformer.conditioning.jepa_pred_heads}
+jepa_pred_dropout: ${auxformer.conditioning.jepa_pred_dropout}
+jepa_max_frames: ${auxformer.conditioning.jepa_max_frames}
+jepa_use_vel_ae: ${auxformer.conditioning.jepa_use_vel_ae}
+jepa_use_mask_embed: ${auxformer.conditioning.jepa_use_mask_embed}
+jepa_use_rope: ${auxformer.conditioning.jepa_use_rope}

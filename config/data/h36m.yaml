@@ -5,9 +5,10 @@ split: 0 # 0: train, 1: val, 2: test
 
 opt :
   input_n: 50 # number of input frames
-  output_n: 10 # number of output frames
+  output_n: 25 # number of output frames
   skip_rate: 1 # downsample rate
   path_to_data : "/home/raphael/motionPred/HisRepItself/datasets/h3.6m/"
+  normalize: true
 
 # batch_size: 32
 # test_batch_size: 32

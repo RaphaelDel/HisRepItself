@@ -4,9 +4,10 @@ _target_: utils.h36motion.Datasets
 split: 0 # 0: train, 1: val, 2: test
 
 opt :
-  input_n: 50 # number of input frames
-  output_n: 10 # number of output frames
-  skip_rate: 1 # downsample rate
+  input_n: 50 #if step = 2 ; 50 # number of input frames
+  output_n: 10 # if step = 2 ; 25 # number of output frames
+  step: 1 # sample one frame every N frames inside each clip
+  skip_rate: 2 # downsample rate
   path_to_data : "/home/raphael/motionPred/HisRepItself/datasets/h3.6m/"
 
 # batch_size: 32

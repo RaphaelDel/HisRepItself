@@ -1,0 +1,98 @@
+defaults:
+  - data: h36mLie
+  - encoderModel: auxformer_xyz
+  - train: nepa_roll
+
+seed: 42
+device: cuda:1
+exp_name: AuxFormer_XYZ
+mode: outputs
+
+eval:
+  checkpoint: /home/raphael/motionPred/HisRepItself/outputs/AuxFormer_XYZ/h36mLie/2026-02-19-11-00-33/checkpoint/best_val_checkpoint.pth.tar #/home/raphael/motionPred/HisRepItself/outputs/AuxFormer_XYZ/h36mLie/2026-02-17-17-14-19/checkpoint/best_val_checkpoint.pth.tar
+  output_dir: eval_results
+  csv_name: eval_auxformer_xyz.csv
+  max_batches: null
+  scale: null
+
+batch_size: 12
+test_batch_size: 12
+num_workers: 0
+pin_memory: true
+dry_run: false
+
+num_joints: 32
+
+auxformer:
+  h_dim: 64
+  decoder_dim: 64
+  num_heads: 8
+  encoder_depth: 4
+  mlp_dim: 128
+  dim_per_head: 32
+  dropout: 0.0
+
+  mask_ratio: 0.5
+  range_mask_ratio: false
+  regular_masking: false
+
+  same_head: false
+  multi_output: false
+  multi_same_head: false
+  decoder_masking: false
+
+  pred_all: false
+  only_recons_past: false
+  add_joint_token: true
+  add_residual: true
+
+  concat_vel: false
+  concat_acc: false
+
+  denoise: true
+  noise_dev: 0.8
+  part_noise: true
+  part_noise_ratio: 0.25
+  denoise_mode: past  # all | past | future
+  range_noise_dev: false
+
+  conditioning:
+    enabled: false
+    mode: film # none | add | film
+    on_decoder: false
+    zero_init: true
+    jepa_ckpt: /home/raphael/motionPred/HisRepItself/outputs/PoseTransformerVAEJEPA/h36mLie/2026-02-18-13-47-16/checkpoint/best_val_checkpoint.pth.tar # VAE frozen when training
+    jepa_ckpt_strict: true
+    jepa_freeze: true
+    jepa_sample_latent: false
+    jepa_d_model: 256
+    jepa_latent_dim: 256
+    jepa_n_heads: 8
+    jepa_n_layers: 4
+    jepa_dropout: 0.1
+    jepa_pred_layers: 4
+    jepa_pred_heads: 8
+    jepa_pred_dropout: 0.1
+    jepa_max_frames: 2048
+    jepa_use_vel_ae: true
+    jepa_use_mask_embed: true
+    jepa_use_rope: true
+
+loss:
+  pred: 1.0
+  mask: 1.0
+  denoise: 1.0
+
+# Forward kinematics
+fk:
+  mode: repo  # repo | clean
+
+OUTPUT:
+  output_dir: experiments
+  log_dir: log_dir
+  ckpt_dir: checkpoint
+  tensorboard_dir: tensorboard
+
+hydra:
+  run:
+    dir: ${mode}/${exp_name}/${hydra:runtime.choices.data}/${now:%Y-%m-%d-%H-%M-%S}

@@ -1,0 +1,68 @@
+defaults:
+  - data: h36mLie
+  - encoderModel: auxformer_nepa_joint
+  - train: nepa_roll
+
+seed: 42
+device: cuda:1
+exp_name: AuxFormer_NEPA_Joint
+mode: outputs
+
+eval:
+  checkpoint: /home/raphael/motionPred/HisRepItself/outputs/AuxFormer_NEPA_Joint/h36mLie/2026-02-20-18-30-36/checkpoint/best_mpjpe_checkpoint.pth.tar
+  output_dir: eval_results
+  csv_name: eval_auxformer_nepa_joint.csv
+  max_batches: null
+  scale: null
+
+batch_size: 16
+test_batch_size: 16
+num_workers: 0
+pin_memory: true
+dry_run: false
+
+num_joints: 32
+
+auxformer_nepa:
+  input_representation: xyz  # xyz | expmap
+  data_scale: 100.0
+  infer_use_denoised_feedback: false
+
+  h_dim: 32 #64
+  num_heads: 4 #8
+  encoder_depth: 4
+  mlp_dim: 128
+  dim_per_head: 16 #32
+  dropout: 0.0
+  max_timestep: 256
+
+  add_joint_token: true
+
+  mask_ratio: 0.5
+  regular_masking: false
+
+  denoise: true
+  noise_dev: 0.5
+  part_noise: true
+  part_noise_ratio: 0.25
+
+loss:
+  enable_mask: false
+  enable_denoise: false
+  pred: 1.0
+  mask: 1.0
+  denoise: 1.0
+
+# Forward kinematics for expmap->xyz conversions used by loss/metrics
+fk:
+  mode: repo  # repo | clean
+
+OUTPUT:
+  output_dir: experiments
+  log_dir: log_dir
+  ckpt_dir: checkpoint
+  tensorboard_dir: tensorboard
+
+hydra:
+  run:
+    dir: ${mode}/${exp_name}/${hydra:runtime.choices.data}/${now:%Y-%m-%d-%H-%M-%S}
